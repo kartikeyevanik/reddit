@@ -48,38 +48,38 @@ export function Sidebar() {
     const navigationItems = {
         [UserRole.SUBMITTER]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-            { name: 'My Submissions', href: '/submissions', icon: FileText },
-            { name: 'Submit Content', href: '/submit', icon: Flag },
+            { name: 'My Submissions', href: '/dashboard/submissions', icon: FileText },
+            { name: 'Submit Content', href: '/dashboard/submit', icon: Flag },
         ],
         [UserRole.REVIEWER]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-            { name: 'Review Queue', href: '/review', icon: UserCheck },
-            { name: 'My Reviews', href: '/my-reviews', icon: FileText },
-            { name: 'Submit Content', href: '/submit', icon: Flag },
+            { name: 'Review Queue', href: '/dashboard/review', icon: UserCheck },
+            { name: 'My Reviews', href: '/dashboard/my-reviews', icon: FileText },
+            { name: 'Submit Content', href: '/dashboard/submit', icon: Flag },
         ],
         [UserRole.MODERATOR]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-            { name: 'Moderation Queue', href: '/moderation', icon: UserCheck },
-            { name: 'Content Management', href: '/content', icon: FileText },
-            { name: 'User Management', href: '/users', icon: Users },
-            { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-            { name: 'Search', href: '/search', icon: Search },
+            { name: 'Moderation Queue', href: '/dashboard/moderation', icon: UserCheck },
+            { name: 'Content Management', href: '/dashboard/content', icon: FileText },
+            { name: 'User Management', href: '/dashboard/users', icon: Users },
+            { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+            { name: 'Search', href: '/dashboard/search', icon: Search },
         ],
         [UserRole.ADMIN]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-            { name: 'Moderation Queue', href: '/moderation', icon: UserCheck },
-            { name: 'Content Management', href: '/content', icon: FileText },
-            { name: 'User Management', href: '/users', icon: Users },
-            { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-            { name: 'System Settings', href: '/settings', icon: Settings },
-            { name: 'Audit Logs', href: '/audit', icon: BarChart3 },
-            { name: 'Search', href: '/search', icon: Search },
+            { name: 'Moderation Queue', href: '/dashboard/moderation', icon: UserCheck },
+            { name: 'Content Management', href: '/dashboard/content', icon: FileText },
+            { name: 'User Management', href: '/dashboard/users', icon: Users },
+            { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+            { name: 'System Settings', href: '/dashboard/settings', icon: Settings },
+            { name: 'Audit Logs', href: '/dashboard/audit', icon: BarChart3 },
+            { name: 'Search', href: '/dashboard/search', icon: Search },
         ],
     }
 
     const commonItems = [
-        { name: 'Notifications', href: '/notifications', icon: Bell },
-        { name: 'Profile', href: '/profile', icon: Users },
+        { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+        { name: 'Profile', href: '/dashboard/profile', icon: Users },
     ]
 
     const currentItems = [...navigationItems[userRole], ...commonItems]
