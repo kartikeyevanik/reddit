@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 
 export function RegisterForm() {
     const [name, setName] = useState("");
@@ -22,7 +24,7 @@ export function RegisterForm() {
         setError("");
 
         if (password !== confirmPassword) {
-            setError("Passwords do not match");
+            setError("❌ Passwords do not match");
             setIsLoading(false);
             return;
         }
@@ -42,7 +44,7 @@ export function RegisterForm() {
                 const data = await response.json();
                 setError(data.error || "Something went wrong");
             }
-        } catch (error) {
+        } catch {
             setError("Something went wrong");
         } finally {
             setIsLoading(false);
@@ -50,70 +52,88 @@ export function RegisterForm() {
     };
 
     return (
-        <Card>
-            <form onSubmit={handleSubmit}>
-                <CardContent className="space-y-4 pt-6">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 p-6">
+            <Card className="w-full max-w-md p-6 bg-gray-900 border border-gray-700 shadow-xl rounded-lg">
+                <CardContent className="space-y-6 pt-6 px-4">
+                    <h2 className="text-3xl font-bold text-white text-center">Create Your Account</h2>
+
                     {error && (
-                        <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
+                        <div className="bg-red-600 text-white p-3 rounded-md shadow text-center">
                             {error}
                         </div>
                     )}
-                    <div className="space-y-2">
-                        <Label htmlFor="name">Full Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">Confirm Password</Label>
-                        <Input
-                            id="confirmPassword"
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                </CardContent>
-                <CardFooter className="flex flex-col space-y-4">
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Creating account..." : "Create account"}
-                    </Button>
-                    <p className="text-center text-sm text-muted-foreground">
-                        Already have an account?{" "}
-                        <a
-                            href="/login"
-                            className="text-primary underline-offset-4 hover:underline"
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-1">
+                            <Label htmlFor="name" className="text-gray-300">Full Name</Label>
+                            <Input
+                                id="name"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="John Doe"
+                                required
+                                className="bg-gray-800 text-white border-gray-600"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label htmlFor="email" className="text-gray-300">Email Address</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="you@example.com"
+                                required
+                                className="bg-gray-800 text-white border-gray-600"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label htmlFor="password" className="text-gray-300">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                required
+                                className="bg-gray-800 text-white border-gray-600"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label htmlFor="confirmPassword" className="text-gray-300">Confirm Password</Label>
+                            <Input
+                                id="confirmPassword"
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="••••••••"
+                                required
+                                className="bg-gray-800 text-white border-gray-600"
+                            />
+                        </div>
+
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white flex justify-center items-center"
                         >
+                            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {isLoading ? "Creating account..." : "Create Account"}
+                        </Button>
+                    </form>
+
+                    <p className="text-center text-gray-300 mt-4">
+                        Already have an account?{' '}
+                        <a href="/login" className="text-indigo-400 hover:underline">
                             Sign in
                         </a>
                     </p>
-                </CardFooter>
-            </form>
-        </Card>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

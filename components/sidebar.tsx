@@ -101,20 +101,7 @@ export function Sidebar() {
 
     return (
         <>
-            {/* Mobile menu button */}
-            {/* <div className="md:hidden flex items-center p-4 border-b">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsMobileOpen(!isMobileOpen)}
-                    className="md:hidden"
-                >
-                    {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </Button>
-                <h1 className="ml-2 text-xl font-semibold">Content Moderation</h1>
-            </div> */}
-
-            {/* Sidebar for desktop and mobile */}
+        
             <div className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-background border-r transform transition-transform duration-300 ease-in-out
         md:relative md:translate-x-0

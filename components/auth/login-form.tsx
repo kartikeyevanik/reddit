@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 
 export function AuthForm() {
     const [email, setEmail] = useState("");
@@ -25,9 +26,9 @@ export function AuthForm() {
             password,
             redirect: false,
         });
-        console.log(result);
+
         if (result?.error) {
-            setError("Invalid credentials");
+            setError("❌ Invalid credentials");
             setIsLoading(false);
         } else {
             router.push("/dashboard");
@@ -40,69 +41,81 @@ export function AuthForm() {
     };
 
     return (
-        <Card>
-            <form onSubmit={handleSubmit}>
-                <CardContent className="space-y-4 pt-6">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 p-6">
+            <Card className="w-full max-w-md p-8 bg-gray-800 border border-gray-700 shadow-2xl rounded-lg">
+                <CardContent className="space-y-6 pt-6 px-4">
+                    <h2 className="text-3xl font-extrabold text-white text-center">Welcome Back</h2>
+
                     {error && (
-                        <div className="bg-destructive/15 text-destructive text-sm p-3 rounded-md">
+                        <div className="bg-red-600 text-white p-3 rounded-md shadow text-center font-medium">
                             {error}
                         </div>
                     )}
-                    <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                </CardContent>
-                <CardFooter className="flex flex-col space-y-4">
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Signing in..." : "Sign in"}
-                    </Button>
-                    <div className="relative my-4">
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        <div className="space-y-1">
+                            <Label htmlFor="email" className="text-white font-semibold">Email Address</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="you@example.com"
+                                required
+                                className="bg-gray-700 text-white border-gray-600 placeholder-gray-400"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <Label htmlFor="password" className="text-white font-semibold">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                required
+                                className="bg-gray-700 text-white border-gray-600 placeholder-gray-400"
+                            />
+                        </div>
+
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold flex justify-center items-center"
+                        >
+                            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {isLoading ? "Signing in..." : "Sign In"}
+                        </Button>
+                    </form>
+
+                    <div className="relative my-6">
                         <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t" />
+                            <span className="w-full border-t border-gray-600"></span>
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-background px-2 text-muted-foreground">
-                                Or continue with
-                            </span>
+                        <div className="relative flex justify-center text-sm text-white uppercase px-2 bg-gray-800 font-medium">
+                            Or continue with
                         </div>
                     </div>
+
                     <Button
                         type="button"
                         variant="outline"
-                        className="w-full"
+                        className="w-full border-gray-600 font-medium"
                         onClick={() => handleOAuthSignIn("google")}
                         disabled={isLoading}
                     >
-                        Google
+                        Continue with Google
                     </Button>
-                    <p className="text-center text-sm text-muted-foreground">
-                        Don't have an account?{" "}
-                        <a
-                            href="/register"
-                            className="text-primary underline-offset-4 hover:underline"
-                        >
+
+                    <p className="text-center text-white mt-4">
+                        Don’t have an account?{' '}
+                        <a href="/register" className="text-indigo-300 hover:underline font-semibold">
                             Sign up
                         </a>
                     </p>
-                </CardFooter>
-            </form>
-        </Card>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
