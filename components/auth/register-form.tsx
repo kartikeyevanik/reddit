@@ -43,7 +43,7 @@ export function RegisterForm() {
                 setError(data.error || "Something went wrong");
             }
         } catch (error) {
-            setError("Something went wrong");
+            setError("Something went wrong " + error);
         } finally {
             setIsLoading(false);
         }

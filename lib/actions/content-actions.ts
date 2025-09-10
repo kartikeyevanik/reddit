@@ -7,6 +7,7 @@ import { authOptions } from '@/lib/auth-options';
 import { Content } from '@/lib/models/Content';
 import connectDB from '@/lib/db';
 import { z } from 'zod';
+import { SubmitContentState } from '@/types/server-actions';
 
 // Validation schema for content submission
 const contentSchema = z.object({
@@ -29,7 +30,7 @@ const contentSchema = z.object({
     path: ["textContent", "imageUrl", "videoUrl", "url"]
 });
 
-export async function submitContent(prevState: any, formData: FormData) {
+export async function submitContent(prevState: SubmitContentState | null, formData: FormData): Promise<SubmitContentState> {
     await connectDB();
     const session = await getServerSession(authOptions);
 
@@ -105,19 +106,8 @@ export async function submitContent(prevState: any, formData: FormData) {
             content: JSON.parse(JSON.stringify(savedContent))
         };
 
-    } catch (error: any) {
+    } catch (error) {
         console.error('Content submission error:', error);
-
-        if (error.name === 'ValidationError') {
-            console.error('Mongoose validation errors:', error.errors);
-            return { error: 'Validation error', details: error.errors };
-        }
-
-        if (error.name === 'CastError') {
-            console.error('Cast error:', error);
-            return { error: 'Invalid data format' };
-        }
-
         return { error: 'Internal server error' };
     }
 }

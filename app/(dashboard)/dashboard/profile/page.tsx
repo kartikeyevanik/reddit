@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Mail, Shield, User as UserIcon } from "lucide-react";
+import Image from "next/image";
 
 // Types for safe serialization
 interface SerializedUser {
@@ -131,7 +132,7 @@ export default async function ProfilePage() {
                     <CardContent className="space-y-4">
                         <div className="flex items-center gap-4">
                             {user.image ? (
-                                <img
+                                <Image
                                     src={user.image}
                                     alt={user.name || "User"}
                                     className="h-16 w-16 rounded-full"

@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "@/components/ui/select";
 import { Plus, X } from 'lucide-react';
+import { ValidationError } from 'next/dist/compiled/amphtml-validator';
+
 
 export default function FormComponent() {
     const router = useRouter();
@@ -44,7 +46,7 @@ export default function FormComponent() {
     // Get field-specific errors
     const getFieldError = (fieldName: string) => {
         if (!state?.details) return null;
-        const error = state.details.find((error: any) => error.path === fieldName);
+        const error = state.details.find((error: ValidationError) => error.path === fieldName);
         return error?.message;
     };
 
@@ -63,7 +65,7 @@ export default function FormComponent() {
                 <div className="p-3 text-sm text-destructive bg-destructive/15 rounded-md">
                     <p className="font-medium mb-2">Please fix the following errors:</p>
                     <ul className="list-disc list-inside space-y-1">
-                        {state.details.map((error: any, index: number) => (
+                        {state.details.map((error:ValidationError, index: number) => (
                             <li key={index}>{error.message}</li>
                         ))}
                     </ul>

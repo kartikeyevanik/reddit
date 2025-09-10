@@ -63,7 +63,7 @@ const handler = NextAuth({
     },
     jwt: ({ token, user }) => {
       if (user) {
-        const u = user as any;
+        const u = user;
         return {
           ...token,
           id: u.id,

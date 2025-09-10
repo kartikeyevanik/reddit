@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "lucide-react";
+import Image from "next/image";
 
 interface Submission {
     _id: string;
@@ -80,7 +81,7 @@ export default async function SubmissionsPage({
                                 <p>{submission.textContent}</p>
                             )}
                             {submission.type === "IMAGE" && submission.imageUrl && (
-                                <img
+                                <Image
                                     src={submission.imageUrl}
                                     alt={submission.title}
                                     className="rounded-md max-h-64 object-cover"
