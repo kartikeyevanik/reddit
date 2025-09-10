@@ -1,5 +1,3 @@
-
-// Client component for the form with useFormState
 'use client';
 
 import { useActionState, useEffect, useState } from 'react';

@@ -1,9 +1,12 @@
-// app/dashboard/submissions/page.tsx
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "lucide-react";
 import Image from "next/image";
+import connectDB from "@/lib/db";
+import { Content } from "@/lib/models/Content";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
 
 interface Submission {
     _id: string;
@@ -18,10 +21,6 @@ interface Submission {
     status: string;
     priority: number;
     createdAt: string;
-    submitterId?: {
-        name?: string;
-        email?: string;
-    };
 }
 
 interface Pagination {
@@ -31,20 +30,38 @@ interface Pagination {
     limit: number;
 }
 
-async function getSubmissions(page: number): Promise<{
+async function getSubmissions(page: number, limit = 5): Promise<{
     submissions: Submission[];
     pagination: Pagination;
 }> {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_APP_URL}/api/submissions?page=${page}&limit=5`,
-        { cache: "no-store" }
-    );
+    const session = await getServerSession(authOptions);
 
-    if (!res.ok) {
-        throw new Error("Failed to fetch submissions");
+    if (!session || !session.user) {
+        throw new Error("Unauthorized");
     }
 
-    return res.json();
+    await connectDB();
+
+    const skip = (page - 1) * limit;
+
+    const [submissions, total] = await Promise.all([
+        Content.find({ submitterId: session.user.id }) // ✅ only current user
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean(),
+        Content.countDocuments({ submitterId: session.user.id }),
+    ]);
+
+    return {
+        submissions: JSON.parse(JSON.stringify(submissions)),
+        pagination: {
+            total,
+            page,
+            pages: Math.ceil(total / limit),
+            limit,
+        },
+    };
 }
 
 export default async function SubmissionsPage({
@@ -52,13 +69,12 @@ export default async function SubmissionsPage({
 }: {
     searchParams?: { page?: string };
 }) {
-    const params = await searchParams
-    const currentPage = Number(params?.page) || 1;
+    const currentPage = Number(searchParams?.page) || 1;
     const { submissions, pagination } = await getSubmissions(currentPage);
 
     return (
         <div className="container max-w-4xl p-8">
-            <h1 className="text-3xl font-bold mb-6">All Submissions</h1>
+            <h1 className="text-3xl font-bold mb-6">My Submissions</h1>
 
             <div className="grid gap-6">
                 {submissions.map((submission) => (
@@ -84,6 +100,8 @@ export default async function SubmissionsPage({
                                 <Image
                                     src={submission.imageUrl}
                                     alt={submission.title}
+                                    width={600}
+                                    height={400}
                                     className="rounded-md max-h-64 object-cover"
                                 />
                             )}

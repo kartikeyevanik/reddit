@@ -1,10 +1,17 @@
-// app/api/submissions/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
 import connectDB from "@/lib/db";
 import { Content } from "@/lib/models/Content";
 
 export async function GET(req: NextRequest) {
     try {
+        const session = await getServerSession(authOptions);
+
+        if (!session || !session.user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
         await connectDB();
 
         const { searchParams } = new URL(req.url);
@@ -14,13 +21,12 @@ export async function GET(req: NextRequest) {
         const skip = (page - 1) * limit;
 
         const [submissions, total] = await Promise.all([
-            Content.find()
-                .populate("submitterId", "name email")
+            Content.find({ submitterId: session.user.id }) // ✅ filter by current user
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit)
                 .lean(),
-            Content.countDocuments(),
+            Content.countDocuments({ submitterId: session.user.id }), // ✅ count only user’s
         ]);
 
         return NextResponse.json(

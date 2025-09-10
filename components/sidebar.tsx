@@ -58,7 +58,7 @@ export function Sidebar() {
         ],
         [UserRole.MODERATOR]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-            { name: 'Moderation Queue', href: '/dashboard/moderation', icon: UserCheck },
+            { name: 'Moderation Queue', href: '/dashboard/moderation-queue', icon: UserCheck },
             { name: 'Content Management', href: '/dashboard/content', icon: FileText },
             { name: 'User Management', href: '/dashboard/users', icon: Users },
             { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
@@ -66,7 +66,7 @@ export function Sidebar() {
         ],
         [UserRole.ADMIN]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-            { name: 'Moderation Queue', href: '/dashboard/moderation', icon: UserCheck },
+            { name: 'Moderation Queue', href: '/dashboard/moderation-queue', icon: UserCheck },
             { name: 'Content Management', href: '/dashboard/content', icon: FileText },
             { name: 'User Management', href: '/dashboard/users', icon: Users },
             { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },

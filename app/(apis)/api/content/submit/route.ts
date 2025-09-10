@@ -38,8 +38,6 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-
-        console.log(body)
         // Validate input
         const validation = contentSchema.safeParse(body);
         if (!validation.success) {
