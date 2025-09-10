@@ -1,11 +1,14 @@
-import ContentForm from "@/components/ContentForm";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   return (
-    <main className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Content Submission</h1>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-4">Dashboard Page</h1>
 
-      <ContentForm></ContentForm>
-    </main>
+      <Link href="/moderation/queue">
+        <Button>Go to Moderation Queue</Button>
+      </Link>
+    </div>
   );
 }

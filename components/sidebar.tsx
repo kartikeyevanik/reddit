@@ -49,7 +49,7 @@ export function Sidebar() {
         [UserRole.SUBMITTER]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
             { name: 'My Submissions', href: '/dashboard/submissions', icon: FileText },
-            { name: 'Submit Content', href: '/dashboard/submit', icon: Flag },
+            { name: 'Submit Content', href: '/dashboard/submit-content', icon: Flag },
         ],
         [UserRole.REVIEWER]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
