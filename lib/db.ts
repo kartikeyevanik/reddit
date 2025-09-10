@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.DATABASE_URL!;
+const MONGODB_URI = process.env.DATABASE_URL as string;
 
 if (!MONGODB_URI) {
-    throw new Error('Please define the DATABASE_URL environment variable inside .env');
+    throw new Error("Please define the DATABASE_URL environment variable inside .env");
 }
 
 interface MongooseCache {
@@ -12,41 +12,28 @@ interface MongooseCache {
 }
 
 declare global {
-    var mongoose: MongooseCache | undefined;
+    var mongoose: MongooseCache;
 }
 
-let cached: MongooseCache = global.mongoose || {
-    conn: null,
-    promise: null,
-};
+let cached = global.mongoose || { conn: null, promise: null };
 
 if (!global.mongoose) {
     global.mongoose = cached;
 }
 
-async function connectDB() {
-    if (cached.conn) {
-        return cached.conn;
-    }
+export default async function connectDB() {
+    if (cached.conn) return cached.conn;
 
     if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-        };
-
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-            return mongoose;
-        });
+        const opts = { bufferCommands: false };
+        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => mongoose);
     }
 
     try {
         cached.conn = await cached.promise;
-    } catch (e) {
+        return cached.conn;
+    } catch (error) {
         cached.promise = null;
-        throw e;
+        throw error;
     }
-
-    return cached.conn;
 }
-
-export default connectDB;
