@@ -49,7 +49,7 @@ export function Sidebar() {
         [UserRole.SUBMITTER]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
             { name: 'My Submissions', href: '/dashboard/submissions', icon: FileText },
-            { name: 'Submit Content', href: '/dashboard/submit', icon: Flag },
+            { name: 'Submit Content', href: '/dashboard/submit-content', icon: Flag },
         ],
         [UserRole.REVIEWER]: [
             { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -86,7 +86,7 @@ export function Sidebar() {
 
     if (status === 'loading') {
         return (
-            <div className="hidden md:flex flex-col w-64 h-screen border-r bg-background">
+            <div className="hidden md:flex flex-col w-64 max-h-screen border-r bg-background">
                 <div className="flex h-14 items-center border-b px-4">
                     <div className="h-6 w-32 bg-muted rounded animate-pulse"></div>
                 </div>
@@ -116,7 +116,7 @@ export function Sidebar() {
 
             {/* Sidebar for desktop and mobile */}
             <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-background border-r transform transition-transform duration-300 ease-in-out
+        fixed inset-y-0 left-0 z-50 w-64 bg-background max-h-screen border-r transform transition-transform duration-300 ease-in-out
         md:relative md:translate-x-0
         ${!isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>

@@ -14,7 +14,9 @@ export default function DashboardLayout({
     return (
         <div>
             <LayoutWrapper>
-                {children}
+                <div className="max-h-screen overflow-y-scroll">
+                    {children}
+                </div>
             </LayoutWrapper>
         </div>
     );
