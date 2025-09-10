@@ -1,15 +1,15 @@
 // lib/mongoose-adapter.ts
-import { Adapter } from 'next-auth/adapters';
-import { Account, IAccount } from '@/lib/models/Accounts';
-import { Session, ISession } from '@/lib/models/Session';
+import { Adapter, AdapterUser, AdapterAccount } from 'next-auth/adapters';
+import { Account } from '@/lib/models/Accounts';
+import { Session } from '@/lib/models/Session';
 import { User, IUser } from '@/lib/models/User';
-import { VerificationToken, IVerificationToken } from '@/lib/models/verificationToken';
+import { VerificationToken } from '@/lib/models/verificationToken';
 import { UserPreferences } from '@/lib/models/UserPreferences';
 import connectDB from './db';
 
 export function MongooseAdapter(): Adapter {
     return {
-        async createUser(user) {
+        async createUser(user: Omit<AdapterUser, "id">): Promise<AdapterUser> {
             await connectDB();
 
             const newUser = await User.create({
@@ -118,7 +118,7 @@ export function MongooseAdapter(): Adapter {
             await UserPreferences.deleteMany({ userId });
         },
 
-        async linkAccount(account) {
+        async linkAccount(account: AdapterAccount): Promise<void> {
             await connectDB();
             await Account.create({
                 userId: account.userId,
@@ -135,9 +135,9 @@ export function MongooseAdapter(): Adapter {
             });
         },
 
-        async unlinkAccount({ provider, providerAccountId }) {
+        async unlinkAccount(params: { provider: string; providerAccountId: string }): Promise<void> {
             await connectDB();
-            await Account.deleteOne({ provider, providerAccountId });
+            await Account.deleteOne(params);
         },
 
         async createSession(session) {

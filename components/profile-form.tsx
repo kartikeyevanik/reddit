@@ -1,13 +1,18 @@
-// components/profile-form.tsx
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 
 interface User {
     id: string;
@@ -15,9 +20,9 @@ interface User {
     name?: string;
     role: string;
     image?: string;
-    emailVerified?: Date;
-    createdAt: Date;
-    updatedAt: Date;
+    emailVerified?: string | null;
+    createdAt?: string | null;
+    updatedAt?: string | null;
 }
 
 interface ProfileFormProps {
@@ -27,23 +32,23 @@ interface ProfileFormProps {
 export default function ProfileForm({ user }: ProfileFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [formData, setFormData] = useState({
-        name: user.name || '',
+        name: user.name || "",
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setError('');
-        setSuccess('');
+        setError("");
+        setSuccess("");
 
         try {
-            const response = await fetch('/api/profile', {
-                method: 'PUT',
+            const response = await fetch("/api/profile", {
+                method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formData),
             });
@@ -51,13 +56,13 @@ export default function ProfileForm({ user }: ProfileFormProps) {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Failed to update profile');
+                throw new Error(data.error || "Failed to update profile");
             }
 
-            setSuccess('Profile updated successfully!');
-            router.refresh(); // Refresh the server component to get updated data
+            setSuccess("Profile updated successfully!");
+            router.refresh();
         } catch (error) {
-            setError(error instanceof Error ? error.message : 'Something went wrong');
+            setError(error instanceof Error ? error.message : "Something went wrong");
         } finally {
             setIsLoading(false);
         }
@@ -74,9 +79,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
         <Card>
             <CardHeader>
                 <CardTitle>Update Profile</CardTitle>
-                <CardDescription>
-                    Update your personal information
-                </CardDescription>
+                <CardDescription>Update your personal information</CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -111,7 +114,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                         <Input
                             id="email"
                             type="email"
-                            value={user.email || ''}
+                            value={user.email || ""}
                             disabled
                             className="opacity-70"
                         />
@@ -122,7 +125,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
 
                     <Button type="submit" disabled={isLoading}>
                         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {isLoading ? 'Updating...' : 'Update Profile'}
+                        {isLoading ? "Updating..." : "Update Profile"}
                     </Button>
                 </form>
             </CardContent>

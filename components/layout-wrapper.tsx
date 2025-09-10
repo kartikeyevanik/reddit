@@ -1,4 +1,3 @@
-// components/layout-wrapper.tsx
 'use client'
 
 import { Sidebar } from '@/components/sidebar'

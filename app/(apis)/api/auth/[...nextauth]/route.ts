@@ -2,7 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
-import { prisma } from "@/lib/db";
+import { User } from "@/lib/models/User"; // your Mongoose User model
+import connectDB from "@/lib/db"; // helper to connect to MongoDB
 
 const handler = NextAuth({
   providers: [
@@ -21,9 +22,11 @@ const handler = NextAuth({
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
+        // Ensure DB is connected
+        await connectDB();
+
+        // Find user in MongoDB
+        const user = await User.findOne({ email: credentials.email }).exec();
 
         if (!user || !user.password) {
           return null;
@@ -39,7 +42,7 @@ const handler = NextAuth({
         }
 
         return {
-          id: user.id,
+          id: user._id.toString(),
           email: user.email,
           name: user.name,
           role: user.role,
@@ -60,7 +63,7 @@ const handler = NextAuth({
     },
     jwt: ({ token, user }) => {
       if (user) {
-        const u = user as unknown as any;
+        const u = user as any;
         return {
           ...token,
           id: u.id,
@@ -72,7 +75,6 @@ const handler = NextAuth({
   },
   pages: {
     signIn: "/login",
-    // signUp: "/register",
   },
 });
 

@@ -25,7 +25,7 @@ export function AuthForm() {
             password,
             redirect: false,
         });
-
+        console.log(result);
         if (result?.error) {
             setError("Invalid credentials");
             setIsLoading(false);
