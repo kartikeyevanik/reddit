@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcryptjs";
-import { User } from "@/lib/models/User"; // your Mongoose User model
-import connectDB from "@/lib/db"; // helper to connect to MongoDB
+import { User } from "@/lib/models/User";
+import connectDB from "@/lib/db"; 
 
 const handler = NextAuth({
   providers: [
